@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh './hello.sh'
+            }
+        }
+    }
+
+    post {
+        success {
+            emailext (
+                to: 'lavanyaramesh319@gmail.com',
+                subject: "Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """Hello,
+
+The Jenkins build for project ${env.JOB_NAME} completed successfully.
+
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
+
+Console Output:
+${BUILD_LOG}
+"""
+            )
+        }
+        failure {
+            emailext (
+                to: 'lavanyaramesh319@gmail.com',
+                subject: "Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """Hello,
+
+The Jenkins build for project ${env.JOB_NAME} has failed.
+
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
+
+Please check the console output for details.
+"""
+            )
+        }
+    }
+}
