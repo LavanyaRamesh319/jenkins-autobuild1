@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Hello Jenkins Lab! Build triggered successfully."
+echo "Hello Jenkins Lab! Autobuild triggered at $(date)."
